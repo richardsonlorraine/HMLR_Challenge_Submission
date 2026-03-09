@@ -1,5 +1,6 @@
 HMLR Data Science Challenge: Planning Decision Classifier
-Project Overview This repository contains a solution for classifying anonymized historical planning decision notices and extracting key metadata: Application Numbers and Applicant Names.
+Project Overview 
+This repository contains a solution for classifying anonymized historical planning decision notices and extracting key metadata: Application Numbers and Applicant Names.
 The solution uses a hybrid approach:
 Rule-based Classification: Categorizing documents (e.g., "Notice of Approval" vs "Register of Planning Charges") based on specific legal headers.
 Regex Extraction: Using patterns to identify varied application number formats like 02/80/1609 or P/00/0759.
