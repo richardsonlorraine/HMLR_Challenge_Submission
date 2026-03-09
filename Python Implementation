@@ -1,0 +1,43 @@
+import re
+import spacy
+# Load spaCy model
+try:
+    nlp = spacy.load("en_core_web_trf")
+except:
+    nlp = spacy.load("en_core_web_sm")
+class HMLRDocumentExtractor:
+    def __init__(self):
+        # [span_0](start_span)[span_1](start_span)[span_2](start_span)Specific patterns found in the provided text[span_0](end_span)[span_1](end_span)[span_2](end_span)
+        self.patterns = {
+            "app_number": r'\b[A-Z0-9]{1,2}/\d{2}/\d{4}\b|\b\d{2}/\d{2}/\d{1,4}\b',
+            "applicant_header": r"Applicant:?\s*(.*)"
+        }
+    def classify(self, text):
+        [span_3](start_span)[span_4](start_span)[span_5](start_span)[span_6](start_span)"""Classify based on document headers[span_3](end_span)[span_4](end_span)[span_5](end_span)[span_6](end_span)."""
+        t = text.lower()
+        if "register" in t or "planning charges" in t:
+            [span_7](start_span)return "Register of Planning Charges"[span_7](end_span)
+        if "approval of details" in t:
+            [span_8](start_span)return "Notice of Approval of Details"[span_8](end_span)
+        if "planning permission" in t and "granted" in t:
+            [span_9](start_span)return "Notice of Approval (Planning Permission)"[span_9](end_span)
+        if "grant of conditional" in t:
+            [span_10](start_span)return "Grant of Conditional Planning Permission"[span_10](end_span)
+        return "Unknown Document Type"
+    def extract_entities(self, text):
+        [span_11](start_span)[span_12](start_span)[span_13](start_span)"""Extract application IDs and Names[span_11](end_span)[span_12](end_span)[span_13](end_span)."""
+        # Extract Application Numbers
+        app_nos = re.findall(self.patterns["app_number"], text)
+        # Extract Applicant Names
+        # [span_14](start_span)[span_15](start_span)For Newham docs, we look for text after 'Applicant'[span_14](end_span)[span_15](end_span)
+        names = []
+        match = re.search(self.patterns["applicant_header"], text, re.IGNORECASE)
+        if match:
+            names.append(match.group(1).strip().split('\n')[0])
+        # [span_16](start_span)Fallback to NER for table-based documents like Page 1[span_16](end_span)
+        if not names:
+            doc = nlp(text)
+            names = [ent.text for ent in doc.ents if ent.label_ in ["PERSON", "ORG"] 
+                     and "Council" not in ent.text]
+        return list(set(app_nos)), list(set(names))
+# Run logic would go here...
