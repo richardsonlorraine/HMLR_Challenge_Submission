@@ -41,3 +41,14 @@ Analysis & Limitations
 Spatial Context: Some documents, like the North Devon District Council notice, store primary data on the "reverse" side, which requires multi-page context handling.
 Entity Linking: In tabular documents (Page 1), multiple applicants and numbers exist; future iterations would use Table Parsing to link entities more accurately.
 Scalability: While regex is effective for the current samples, a LayoutLM approach is recommended for wider UK council variations.
+
+Repository Structure A clean structure ensures the HMLR team can run your code immediately.
+HMLR_Challenge_Submission/
+├── data/               # Place the anonymised 1.pdf here
+├── src/
+│   ├── processor.py    # The core logic (class-based)
+│   └── utils.py        # Regex patterns and helper functions
+├── main.py             # Entry point to run the code
+├── requirements.txt    # List of dependencies
+├── analysis_report.md  # Your one-page analysis
+└── README.md           # Instructions on how to setup and run
